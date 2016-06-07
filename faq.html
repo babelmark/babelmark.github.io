@@ -1,0 +1,153 @@
+---
+layout: default
+permalink: /faq/
+---
+<div class="container">
+<div class="row">
+	<div class="twelve column"><span class="title"><a href="/">{% include babelmark.svg %} babel<strong>mark</strong></a></span></div>
+</div>
+<div class="row">
+<div class="twelve column">
+<h1>FAQ</h1>
+<p><a href="/">&larr; Back to Babelmark</a></p>
+<nav id="TOC"><ul>
+<li><a href="#what-is-this-for">What is this for?</a></li>
+<li><a href="#what-are-some-examples-of-interesting-divergences-between-implementations">What are some examples of interesting divergences between implementations?</a><ul>
+<li><a href="#lists">Lists</a></li>
+<li><a href="#links">Links</a></li>
+<li><a href="#inline-markup">Inline markup</a></li>
+<li><a href="#raw-html">Raw HTML</a></li>
+<li><a href="#other">Other</a></li>
+</ul></li>
+<li><a href="#why-does-it-matter-whether-implementations-agree">Why does it matter whether implementations agree?</a></li>
+<li><a href="#what-are-some-big-questions-that-the-markdown-spec-does-not-answer">What are some big questions that the markdown spec does not answer?</a></li>
+<li><a href="#what-was-babelmark-1">What was Babelmark 1?</a></li>
+<li><a href="#how-does-babelmark-2-differ-from-babelmark-1">How does Babelmark 2 differ from Babelmark 1?</a></li>
+<li><a href="#how-can-i-add-my-markdown-implementation-to-babelmark-2">How can I add my markdown implementation to Babelmark 2?</a></li>
+<li><a href="#why-is-there-a-1000-character-limit-on-input">Why is there a 1000 character limit on input?</a></li>
+<li><a href="#what-determines-the-order-in-which-the-implementations-are-listed">What determines the order in which the implementations are listed?</a></li>
+</ul></nav>
+
+<h2 id="what-is-this-for">What is this for?</h2>
+<p>This is a tool for comparing the output of various implementations of John Gruber’s <a href="http://daringfireball.net/projects/markdown/">markdown</a> syntax for plain text documents. The <a href="http://daringfireball.net/projects/markdown/syntax">official markdown syntax documentation</a> is silent or vague on many issues, and implementations have diverged in their interpretations of the syntax. Even when the interpretation of the syntax spec is not in question, implementations may have bugs. So it is useful to be able to see at a glance how implementations differ on various inputs. The hope is that this tool will promote discussion of how and whether certain vague aspects of the markdown spec should be clarified.</p>
+<h2 id="what-are-some-examples-of-interesting-divergences-between-implementations">What are some examples of interesting divergences between implementations?</h2>
+<h3 id="lists">Lists</h3>
+<ul>
+<li><a href="/?normalize=1&amp;text=-+top%0A+-+indented+one%0A++-+indented+two%0A+++-+indented+three%0A++++-+indented+four%0A+++++-+indented+five%0A">Sublists and the four space rule</a></li>
+<li><a href="/?normalize=1&amp;text=+-+one%0A-+two%0A%0A">Sublist with negative indentation</a></li>
+<li><a href="/?normalize=1&amp;text=1.+list%0A%0A++continued%0A%0A">List continuations and the four space rule</a></li>
+<li><a href="/?normalize=1&amp;text=+8.+item+1%0A+9.+item+2%0A10.+item+2a">Right-aligned ordered list numbers</a></li>
+<li><a href="/?normalize=1&amp;text=-+foo%0A-+bar%0A%0A1.+first%0A2.+second%0A">Consecutive lists</a></li>
+<li><a href="/?normalize=1&amp;text=-+one%0A-%0A-+three%0A">Empty list item</a></li>
+<li><a href="/?normalize=1&amp;text=%2B+++item+1%0D%0A%0D%0A++++%2B+++item+2%0D%0A%0D%0A+*+++*+++*+++*+++*">Lists and HRs</a></li>
+<li><a href="/?normalize=1&amp;text=1.+a%0A-+x%0A-+y%0A%0A2.+b%0A-+x%0A-+y%0A">Heterogeneous lists</a></li>
+<li><a href="/?normalize=1&amp;text=1.+one%0A%0A2.+two%0A3.+three%0A">Partially tight list</a></li>
+<li><a href="/?normalize=1&amp;text=-+%23+hi%0A%0A">Header in list item</a></li>
+<li><a href="/?normalize=1&amp;text=-+%60a+long+code+span+can+contain+a+hyphen+characater+like+this%0A++-+and+it+can+screw+things+up%60%0A%0A%0A%0A">List items and code spans</a></li>
+</ul>
+<h3 id="links">Links</h3>
+<ul>
+<li><a href="/?normalize=1&amp;text=%5Blink%5D(%2Furl+with+space)%0A">Spaces in URL</a></li>
+<li><a href="/?normalize=1&amp;text=%5Blink+*with+emph%5D*%5D(%2Furl)">Link with emphasis including bracket</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bfoo+bar%5D%5B%5D%0A%0A%5Bfoo++bar%5D%3A+%2Furl%0A%0A%0A%0A%0A%0A%0A%0A%0A%0A">Spaces in reference links</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bhi%5D(%2Furl+%22with+title%5C)%22)%0A%0A">Escapes in title attribute</a></li>
+<li><a href="/?normalize=1&amp;text=%3E+%5Bfoo%5D%5B%5D%0A%3E%0A%3E+%5Bfoo%5D%3A+%2Furl%0A">Reference link definition in blockquote</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bhi%5D+(%2Furl)%0A">Can an inline link contain a space after the square bracket?</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bhi%5D(%2Furl(with+parens))%0A">URL with parentheses</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bthis+%60is+a%5D+link%60+with+backticks%5D(%2Furl)%0A">Link with backticks</a></li>
+<li><a href="/?normalize=1&amp;text=%5B%D0%A2%D0%BE%D0%BB%D0%BF%D0%BE%D0%B9%5D+is+a+Russian+word.%0A%0A%5B%D0%A2%D0%9E%D0%9B%D0%9F%D0%9E%D0%99%5D%3A+%2Furl%0A">Case-insensitive reference links with unicode</a></li>
+<li><a href="/?normalize=1&amp;text=%60%D0%A2%D0%BE%09%D0%BB%D0%BF%D0%BE%D0%B9%60+is+a+Russian+word+with+a+tab+inside.%0A">Unicode and tab conversion</a></li>
+<li><a href="/?normalize=1&amp;text=%5BLike+this%5D%5Bd%5D%3A+%5Bhere%5D%5Bh%5D.%0A%0A%5Bd%5D%3A+foo%0A%5Bh%5D%3A+ba">Disappearing reference links!</a></li>
+<li><a href="/?normalize=1&amp;text=%3Chttp%3A%2F%2Fg%26ouml%3B%26ouml%3Bgle.com%3E%0A%0A">Entities in autolinks</a></li>
+<li><a href="/?normalize=1&amp;text=%5Blink%5D(http%3A%2F%2Fg%26ouml%3B%26ouml%3Bgle.com)%0A%0A%0A">Entities in URLs</a></li>
+<li><a href="/?normalize=1&amp;text=%5Blink+%5Bin+link%5D(%2Furl)%5D(%2Furl2)%0A">Links inside links</a></li>
+<li><a href="/?normalize=1&amp;text=%5C!%5Bnot+an+image%5D(%2Furl.jpg)%0A">Escaped image</a></li>
+<li><a href="/?normalize=1&amp;text=hello+%60%60%60there%60%60.%0A">Unmatched backticks</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bfoo%5D%3A+%2Fbar%0A%0A%5Bfoo%5D%5B1%5D">What to do when a reference link is undefined?</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bfoo%5D%5Bbar%5D%5Bbaz%5D%0A%0A%5Bbaz%5D%3A+%2Furl%0A">Reference link precedence</a></li>
+<li><a href="/?normalize=1&amp;text=[link+test][0]%0A[link+test][1]%0A[link+test][2]%0A[link+test][3]%0A[link+test][4]%0A%0A[0]%3A[http%3A%2F%2Fexample.com]%0A+[1]%3A[http%3A%2F%2Fexample.com]%0A++[2]%3A[http%3A%2F%2Fexample.com]%0A+++[3]%3A[http%3A%2F%2Fexample.com]%0A++++[4]%3A[http%3A%2F%2Fexample.com]%0A">Reference link indentation</a></li>
+</ul>
+<h3 id="inline-markup">Inline markup</h3>
+<ul>
+<li><a href="/?normalize=1&amp;text=***bold**+in+ital*%0A%0A***ital*+in+bold**">Nested emph and strong</a></li>
+<li><a href="/?normalize=1&amp;text=*hi+%60there*%60%0A">Precedence, emphasis and code span</a></li>
+<li><a href="/?normalize=1&amp;text=*hi***there*%0A">Emphasis precedence</a></li>
+<li><a href="/?normalize=1&amp;text=*a+**b+*a+**b**+a*+b**+a*%0A">Emphasis nesting</a></li>
+<li><a href="/?normalize=1&amp;text=%60+%60%60code%60%60+%60%0A">Backticks in code span</a></li>
+<li><a href="/?normalize=1&amp;text=*hi%5C*+there*%0A">Escaped asterisk</a></li>
+</ul>
+<h3 id="raw-html">Raw HTML</h3>
+<ul>
+<li><a href="/?normalize=1&amp;text=%3CDIV%3E%0Ahi%0A%3C%2FDIV%3E%0A">Capitalized DIV tags</a></li>
+<li><a href="/?normalize=1&amp;text=%3Cins%3EInserted+paragraph.%3C%2Fins%3E%0A%0A"><code>&lt;ins&gt;</code> tag around paragraph</a></li>
+<li><a href="/?normalize=1&amp;text=-+one%0A%3C!--%0A+-+two+%0A--%3E%0A-+three%0A">Commented out list item</a></li>
+<li><a href="/?normalize=1&amp;text=%5Bfoo%5D%0A%0A%3C!--%0A%0A%5Bfoo%5D%3A+%2Furl%0A%0A--%3E%0A">Commented out reference link definition</a></li>
+</ul>
+<h3 id="other">Other</h3>
+<ul>
+<li><a href="/?normalize=1&amp;text=%3E+one%0A%0A%3E+two%0A%0A%3E+three%0A%3E%0A%3E+four%0A">Collapsing blockquotes</a></li>
+<li><a href="/?normalize=1&amp;text=x%3Cmax%3Ccode%3Ea%2Cb%3C/code%3E%0D%0A">Unescaped <code>&lt;</code></a></li>
+<li><a href="/?normalize=1&amp;text=++++code%0A">Newline after code block?</a></li>
+<li><a href="/?normalize=1&amp;text=hi++">Are two spaces at end of paragraph a linebreak?</a></li>
+<li><a href="/?normalize=1&amp;text=under+a+lciense+from+AT%26T%3B+however%2C%0A">Unknown entities</a></li>
+<li><a href="/?normalize=1&amp;text=!%5B*%5Balt%5D(%2Furl)*%5D(img.jpg)%0A">Markup in image alt tag</a></li>
+<li><a href="/?normalize=1&amp;text=hi%0A++++there%0A">Blank line needed before code block?</a></li>
+<li><a href="/?normalize=1&amp;text=-%0A--%0A---%0A--%0A-%0A">Dash patterns</a></li>
+<li><a href="/?normalize=1&amp;text=%23%23+hi%5C%23%23%23%0A">ATX headers with escapes</a></li>
+<li><a href="/?normalize=1&amp;text=hello++%0A-----%0A%0A%0A">Setext header? with two spaces at end</a></li>
+<li><a href="/?normalize=1&amp;text=%23+Hello+%5Bthere%0A+++people%5D(%2Furl)%0A">Inlines in headers</a></li>
+</ul>
+<h2 id="why-does-it-matter-whether-implementations-agree">Why does it matter whether implementations agree?</h2>
+<p>Markdown is everywhere these days. If the same document is interpreted differently in different places, that is a problem. For example, suppose you have a nice piece of documentation on a github wiki, and you want to turn it into DocBook using pandoc. Your sublists are indented two spaces, and this works fine on the wiki, but when you run the document through pandoc, these items are interpreted as parts of the main list. If you are lucky, you notice this before distributing the DocBook file!</p>
+<h2 id="what-are-some-big-questions-that-the-markdown-spec-does-not-answer">What are some big questions that the markdown spec does not answer?</h2>
+<ol style="list-style-type: decimal">
+<li><p>How much indentation is needed for a sublist? The spec says that continuation paragraphs need to be indented four spaces, but is not fully explicit about sublists. It is natural to think that they, too, must be indented four spaces, but <a href="/?normalize=1&amp;text=-+top%0A+-+indented+one%0A++-+indented+two%0A+++-+indented+three%0A++++-+indented+four%0A%0A%0A%0A">not all implementations require that</a>. (Note that none of the implementations that allow a one-space indentation to start a sublist are entirely consistent about that.) This is hardly a “corner case,” and divergences between implementations on this issue often lead to surprises for users in real documents. See <a href="http://article.gmane.org/gmane.text.markdown.general/1997">this comment by John Gruber</a>.</p></li>
+<li><p>Is a blank line needed before a block quote or header? Or can you have things <a href="/?normalize=1&amp;text=paragraph%0A%3E+block+quote%0A%23+header%0Aparagraph%0A">like this</a>:</p>
+<pre><code>paragraph
+&gt; block quote
+# header
+paragraph</code></pre>
+<p>Most implementations do not require the blank line. However, this can lead to unexpected results in hard-wrapped text, and also to ambiguities in parsing (note that some implementations put the header inside the blockquote, while others do not). John Gruber has also spoken <a href="http://article.gmane.org/gmane.text.markdown.general/2146">in favor of requiring the blank lines</a>.</p></li>
+<li><p>Is blank space allowed between the <code>[...]</code> part and the <code>(...)</code> part of an inline link? That is, can you have a link <a href="/?normalize=1&amp;text=%5Bmy+link%5D+(%2Furl)">like this</a>:</p>
+<pre><code>[my link] (/url)</code></pre>
+<p>There is <a href="http://article.gmane.org/gmane.text.markdown.general/4513">some relevant discussion here</a>.</p></li>
+<li><p>What is the exact rule for determining when list items get wrapped in <code>&lt;p&gt;</code> tags? Can a list be partially loose and partially tight? What should we do with <a href="/?normalize=1&amp;text=1.+one%0A%0A2.+two%0A3.+three%0A">a list like this</a>:</p>
+<pre><code>1. one
+
+2. two
+3. three</code></pre>
+<p>Or <a href="/?normalize=1&amp;text=1.++one%0A%0A++++-+a%0A%0A++++-+b%0A2.++two%0A">this</a>?</p>
+<pre><code>1.  one
+
+    - a
+
+    - b
+2.  two</code></pre>
+<p>There are some relevant comments by John Gruber <a href="http://article.gmane.org/gmane.text.markdown.general/2554">here</a>.</p></li>
+<li><p>When list markers change from bullets to numbers, should we have <a href="/?normalize=1&amp;text=-+foo%0A-+bar%0A%0A1.+foo%0A2.+bar%0A">two lists or one</a>?</p></li>
+<li><p>Should two blockquotes with a blank line between them be treated <a href="/?normalize=1&amp;text=%3E+one%0A%0A%3E+two%0A%0A">as a single blockquote</a>? Most implementations do this, but John Gruber has suggested <a href="http://article.gmane.org/gmane.text.markdown.general/2206">that this be changed</a>. (Waylan Limberg <a href="http://www.mail-archive.com/markdown-discuss@six.pairlist.net/msg02750.html">points out</a> that the spec actually does seem to settle this question, in favor of a single blockquote.)</p></li>
+<li><p>Can reference link definitions occur <a href="/?normalize=1&amp;text=1.++%5Bfoo%5D%5B%5D%0A%0A++++%5Bfoo%5D%3A+%2Ffoo%0A%0A%3E+%5Bbar%5D%5B%5D%0A%3E%0A%3E+%5Bbar%5D%3A+%2Fbar%0A">embedded in block quotes and list items</a>? (The spec says they can be “anywhere in the document,” but most implementations require that they be at the outer level.)</p></li>
+</ol>
+<h2 id="what-was-babelmark-1">What was Babelmark 1?</h2>
+<p>The <a href="http://babelmark.bobtfish.net">original Babelmark</a> was written by Michel Fortin, author of PHP Markdown and PHP Markdown Extra. It is still running, but with very old versions of the markdown implementations.</p>
+<h2 id="how-does-babelmark-2-differ-from-babelmark-1">How does Babelmark 2 differ from Babelmark 1?</h2>
+<p>Instead of asking the Babelmark maintainer to install all the converters on his server, and keep them up to date, we use a decentralized model. Each implementer provides a small “dingus server” that accepts textual input and returns HTML. Babelmark 2 queries these dingus servers asynchronously and combines their outputs into a page of results. This system puts the burden on implementers to keep their servers up to date.</p>
+<h2 id="how-can-i-add-my-markdown-implementation-to-babelmark-2">How can I add my markdown implementation to Babelmark 2?</h2>
+<p>Write a server app or CGI script that accepts accepts GET queries, takes the text out of the <code>text</code> parameter, and returns a javascript object with the following fields: <code>name</code> (the name of the markdown processor), <code>version</code> (the version being run), and <code>html</code> (the result of converting the text to HTML).</p>
+<p>Example:</p>
+<pre><code>$ curl &#39;http://johnmacfarlane.net/cgi-bin/pandoc-dingus?text=hi&#39;
+{&quot;name&quot;:&quot;Pandoc&quot;,&quot;html&quot;:&quot;&lt;p&gt;hi&lt;/p&gt;&quot;,&quot;version&quot;:&quot;1.9.4.2&quot;}</code></pre>
+<p>The script can, if desired, return an error if the input text exceeds 1000 characters.</p>
+<p>Send the URL of your server or script to the Babelmark 2 maintainer, <script type="text/javascript">
+<!--
+h='&#98;&#x65;&#114;&#x6b;&#x65;&#108;&#x65;&#x79;&#46;&#x65;&#100;&#x75;';a='&#64;';n='&#106;&#x67;&#x6d;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+'John MacFarlane'+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#74;&#x6f;&#104;&#110;&#32;&#x4d;&#x61;&#x63;&#70;&#x61;&#114;&#108;&#x61;&#110;&#x65;&#32;&#40;&#106;&#x67;&#x6d;&#32;&#x61;&#116;&#32;&#98;&#x65;&#114;&#x6b;&#x65;&#108;&#x65;&#x79;&#32;&#100;&#x6f;&#116;&#32;&#x65;&#100;&#x75;&#x29;</noscript>.</p>
+<h2 id="why-is-there-a-1000-character-limit-on-input">Why is there a 1000 character limit on input?</h2>
+<p>A thousand characters should be sufficient to test syntax features. We impose the limit to reduce load on the servers.</p>
+<h2 id="what-determines-the-order-in-which-the-implementations-are-listed">What determines the order in which the implementations are listed?</h2>
+<p>The calls to the individual dingus servers are made asynchronously, and the results added in the order they come in. However, one should not infer that the implementations that appear at the top are the fastest. The performance differences in converting small bits of markdown are swamped by other factors, such as server latency and script startup time. For example, RedCarpet has the fastest parser of all the implementations, but often appears last because of the slow startup time of ruby scripts. And PHP Markdown is faster than Markdown.pl, but its dingus server is much farther away.</p>
+</div>
+</div>
+</div>

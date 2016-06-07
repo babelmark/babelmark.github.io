@@ -1,0 +1,133 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import "normalize";
+@import "skeleton";
+@import "github-markdown";
+@import "prism";
+
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+}
+
+#wrapper {
+	min-height:100%;
+	position:relative;
+}
+
+#header {
+	padding:10px;
+}
+
+#content {
+	padding-bottom:50px;
+}
+
+#footer {
+	width:100%;
+	height:50px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.title {
+  font-size: 4.0rem; 
+  line-height: 1.2;  
+  font-weight: 300;
+  a, a:hover, a:link, a:visited, a:active {
+	color: #222;
+	text-decoration: none;
+  }
+}
+
+.button-primary code
+{
+  color: #222;
+  background-color: #c0efff;
+}
+
+.result-names p {
+  font-size: 1.3rem;
+  margin-bottom: 0.5em;
+}
+
+#markdown {
+  height: 150px;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+.heading-info {
+  font-size: 1.5rem;
+  color: #888;
+  letter-spacing: normal;
+}
+
+.heading-info code
+{
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+
+code .result-lang
+{
+  padding: 0px;
+}
+
+.result h4
+{
+  margin-top: 1rem;
+  border-bottom-width: 1px; 
+  border-bottom-style: inset; 
+  color: #ccc;
+}
+
+.copyright
+{
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.result-error
+{
+  background-color: #FFEEEE;
+  color: #ee0000;
+  padding: 1rem;
+}
+
+.result-warning
+{
+  background-color: rgb(255, 250, 238);
+  color: rgb(238, 176, 0);
+  padding: 1rem;
+}
+
+.result-order
+{
+	float: right;
+}
+
+.preview
+{
+  border-style: dashed;
+  border-width: 1px;
+  border-color: #ccc;
+  padding: 1em;
+}
+
+.logo {
+  width: 32px;
+}
+
+/* Larger than phablet */
+@media (min-width: 550px) {
+  .title { font-size: 7.0rem; } 
+  .logo { width: 64px; }
+}

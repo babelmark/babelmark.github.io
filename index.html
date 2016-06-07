@@ -1,0 +1,313 @@
+---
+layout: default
+---
+
+<a href="https://github.com/babelmark" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#31B7E0; color:#fff; position: absolute; top: 0; border: 0; right: 0;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+<div class="container">
+<div class="row">
+	<div class="twelve columns"><span class="title"><a href="/">{% include babelmark.svg %} babel<strong>mark</strong></a></span>
+		<p>Compare Markdown Implementations (<a href="/faq">FAQ</a>)</p>	
+	</div>
+</div>
+<div class="row">
+	<div class="twelve columns">
+		<textarea id="markdown" class="u-full-width" placeholder="Type a markdown text..." autofocus></textarea>
+	</div>
+</div>
+<div class="row">
+	<div class="three columns">
+		<button class="button-primary" onclick="sendRequestFromInput()">Convert <code>(ctrl+enter)</code></button>
+		<span id="query-spin" class="spin" style="display: none">{% include spin.svg %}</span>
+	</div>
+	<div class="nine columns">
+		  <label>
+			<input id="normalize" type="checkbox" checked onchange="displayResults()">
+			<span class="label-body">Normalize</span>
+		  </label>
+	</div>
+</div>
+<div class="row">
+  <div id="results" class="twelve columns">
+  </div>
+</div>
+
+<div class="row">
+  <div class="twelve columns" style="margin-top: 10%">
+  </div>
+</div>
+
+</div>
+<script>
+(function($) {
+    $.QueryString = (function(a) {
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i)
+        {
+            var p=a[i].split('=');
+            if (p.length != 2) continue;
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+    })(document.location.search.substr(1).split('&'))
+})(jQuery);
+
+function escapeHtml(s)
+{
+	return s ? s.replace(/&/g, '&amp;').replace(/</g, '&lt;') : "";
+}
+
+const jsonResults = [];
+
+function displayResults() {
+  var mapResults = {};
+  var groupResults = [];
+  
+  var normalized = $('#normalize').is(':checked');
+
+  for (var i = 0; i < jsonResults.length; i++) {
+    var json = jsonResults[i];
+	
+	// Get the text (normalized or not, error or not)
+	var text = json.html;
+	if (json.error)
+    {
+	  text = json.error;
+    }
+	else if (normalized)
+	{
+	  text = json.html_clean;
+	}
+	text = (text ? text : "").trim();
+    
+    var resultsPerGroup = mapResults[text]
+    if (!resultsPerGroup)
+    {
+    	resultsPerGroup = { id: groupResults.length, text: text, error: json.error,  elements:[]};
+    	mapResults[text] = resultsPerGroup;
+    	groupResults.push(resultsPerGroup)
+    }
+    resultsPerGroup.elements.push(json);
+  }		
+
+  var sortable = [];
+  for (var i = 0; i < groupResults.length; i++) {
+    var group = groupResults[i];
+    sortable.push([group, group.elements.length])
+  }
+  sortable.sort(function(a, b) {
+    return b[1] - a[1]
+  });
+
+  $('#results').html("");
+  
+  for (var i = 0; i < sortable.length; i++) {
+    var group = sortable[i][0];
+    var groupHtml = $("<div>", {
+      id: "json-group-" + group.id,
+      class: "twelve columns"
+    });
+
+    var groupContentHeaderHtml = $("<div>", {
+      class: "row"
+    });
+    groupHtml.append(groupContentHeaderHtml);
+
+    var implem = "";
+    if (group.elements.length > 0) {
+      implem = '<span class="heading-info"><code>' + group.elements.length + '</code> implem' + (group.elements.length === 1 ? '' : 's') + '</span>';
+    }
+    groupContentHeaderHtml.append($('<div class="twelve columns result"><h4>Results ' + implem + '<code class="result-order">#' + i + '</code></h4></div>'));
+	
+    var groupContentBodyHtml = $("<div>", {class: "row"});
+    groupHtml.append(groupContentBodyHtml);
+    $('#results').append(groupHtml);
+
+    var groupNames = $("<div>", {class: "three columns result-names"});
+	
+    group.elements.sort(function(a, b) {
+      return (a.name + a.version).localeCompare(b.name + b.version);
+    });
+	
+	// output names
+    for (var j = 0; j < group.elements.length; j++) {
+      var json = group.elements[j];
+      groupNames.append($("<p><a href='" + json.repo + "' target='_blank'>" + escapeHtml(json.name) + "</a> " + escapeHtml(json.version) + "<code class='result-lang'>" + json.lang + "</code></p>"));
+    }
+	groupContentBodyHtml.append(groupNames);
+	
+	// output results
+    var groupResult = $('<div class="nine columns"></div>');
+    groupContentBodyHtml.append(groupResult);
+	if (group.text === '')
+	{
+		groupResult.append(getInfoDiv("Warning, result is empty", "warning"));
+	}
+	else if (group.error)
+	{
+		groupResult.append(getInfoDiv(group.text, "error"));
+	}
+	else
+	{
+      var preElement = $('<pre class="language-html"></pre>')
+      var codeElement = $('<code class="language-html line-numbers">' + escapeHtml(group.text) + "</code><");
+      preElement.append(codeElement);
+      groupResult.append(preElement);
+	  groupResult.append($('<div class="preview markdown-body">' + group.text + '</div>'))
+      Prism.highlightElement(codeElement[0]);
+	}
+  }
+}
+
+function getInfoDiv(message, type)
+{
+	return $("<div class='result-" + type +"'><p>" + message + "</p></div>");
+}
+
+xhrid = 0;
+
+
+function clearResults()
+{
+	// Clears the actual results
+	jsonResults.length = 0;
+	$('#results').html("");
+}
+
+function sendRequestFromInput()
+{
+  sendRequest($('#markdown').val(), true);
+}
+
+function sendRequest(markdownText, shouldPushHistory)
+{
+	clearResults();
+	
+    // Update browser query
+	if (!markdownText || markdownText === '')
+	{
+      $('#markdown').val('');
+	  if (shouldPushHistory || markdownText === '')
+	  {
+        history.pushState(markdownText, '', '/');
+	  }
+	  return;
+	}
+	
+	// Update the input box
+	if ($('#markdown').val() != markdownText)
+	{
+	  $('#markdown').val(markdownText);
+	}	
+	if (shouldPushHistory)
+	{
+	  history.pushState(markdownText, '', "?" + $.param({text: markdownText}));
+	}
+	
+	var xhr = new XMLHttpRequest()
+	$('#query-spin').show();
+	xhr.timeout = 5000; 
+	xhr.open("GET", "http://babelmark.azurewebsites.net/api/get?text=" + encodeURI(markdownText), true)
+	var nextLine = 0;
+	xhrid++;
+	var xhrid_copy = xhrid;
+
+    xhr.onload = function() {
+       $('#query-spin').hide();
+	}
+	
+	xhr.onprogress = function () {
+      if (xhr.readyState != 2 && xhr.readyState != 3 && xhr.readyState != 4)
+        return;
+      if (xhr.readyState == 3 && xhr.status != 200)
+        return;	
+		
+	  // If we have already another request going on, don't do anything, not super reliable
+	  if (xhrid_copy != xhrid)
+	  {
+	    return;
+	  }
+	  
+	  var slice = xhr.responseText.slice(nextLine);
+	  var textResults = slice.split("\n\n");
+	  for(var i = 0; i < textResults.length; i++)
+	  {
+		if (textResults[i] === "")
+		{
+			continue;
+		}
+	    var jsonText = textResults[i].trim();
+		var json = JSON.parse(jsonText);
+		jsonResults.push(json);
+	  }
+	  displayResults();
+	  nextLine = xhr.responseText.length;
+	};
+	
+	xhr.onerror = function()
+	{
+	  // If we have already another request going on, don't do anything, not super reliable
+	  if (xhrid_copy != xhrid)
+	  {
+	    return;
+	  }
+	    var divRow = $("<div>", {class: "row"});
+		var divColumns = $("<div>", {class: "twelve columns"});
+	    divRow.append(divColumns);
+		divColumns.append(getInfoDiv("An unexpected error occured when trying to contact babelmark-proxy. Reason: <strong>" + escapeHtml(xhr.responseText ? xhr.responseText : (xhr.status === 0 ? "timeout" : "unknown" )) + "</strong>, Error status: " + escapeHtml('' + xhr.status), "error"));		
+        $('#results').append(divRow);
+	    $('#query-spin').hide();
+	};
+	
+	xhr.ontimeout = function()
+	{
+	  // If we have already another request going on, don't do anything, not super reliable
+	  if (xhrid_copy != xhrid)
+	  {
+	    return;
+	  }
+	    var divRow = $("<div>", {class: "row"});
+		var divColumns = $("<div>", {class: "twelve columns"});
+	    divRow.append(divColumns);
+		divColumns.append(getInfoDiv("The request has timeout", "warning"));		
+        $('#results').append(divRow);
+	    $('#query-spin').hide();
+	};
+	
+	xhr.onabort = function()
+	{
+	  // If we have already another request going on, don't do anything, not super reliable
+	  if (xhrid_copy != xhrid)
+	  {
+	    return;
+	  }
+	    $('#query-spin').hide();
+	};
+	
+	xhr.send()
+
+    // jsonpipe.flow('http://localhost:55312/api/get?test=xxx', {
+	// 	"success": function(data) {
+	// 	   console.log(data);
+	// 	   $('#results').append("<p>" + data.id + "</p>");
+    //     }
+	// });
+}
+
+window.addEventListener('popstate', function(event) {
+  sendRequest(event.state, false);
+}, false);
+
+$( document ).ready(function() {
+  sendRequest($.QueryString.text, false);
+  
+  $('#markdown').keydown(function (e) {
+    if ((e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey) {
+      sendRequestFromInput();
+    }
+  });
+});
+
+//var simplemde = new SimpleMDE({ element: document.getElementById("markdown"), spellChecker: false });
+</script>
