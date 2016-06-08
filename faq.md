@@ -8,6 +8,9 @@ FAQ
 
 [← Back to Babelmark](/)
 
+The original text of this [FAQ from babelmark2](http://johnmacfarlane.net/babelmark2/faq.html) is copyrighted by John Mac Farlane
+
+
 -   [What is this for?](#what-is-this-for)
 -   [What are some examples of interesting divergences between
     implementations?](#what-are-some-examples-of-interesting-divergences-between-implementations)
@@ -22,7 +25,7 @@ FAQ
     answer?](#what-are-some-big-questions-that-the-markdown-spec-does-not-answer)
 -   [What was the previous Babelmark 1?](#what-was-the-previous-babelmark)
 -   [What was Babelmark 2?](#what-was-babelmark-2)
--   [What is this new Babelmark?](#what-is-this-new-babelmark)
+-   [What is Babelmark 3?](#what-is-babelmark-3)
 -   [How can I add my markdown implementation to Babelmark
     2?](#how-can-i-add-my-markdown-implementation-to-babelmark-2)
 -   [Why is there a 1000 character limit on
@@ -249,7 +252,7 @@ John Mac Farlane introduced a new version called [babelmark2](http://johnmacfarl
 Instead of asking the Babelmark maintainer to install all the converters on his server, and keep them up to date, we use a decentralized model. Each implementer provides a small “dingus server” that accepts textual input and returns HTML. Babelmark 2 queries these dingus servers asynchronously and combines their outputs into a page of results. This system puts the burden on implementers to keep their servers up to date.
 
 
-What is this new Babelmark?
+What is Babelmark 3?
 ---------------------------------------------
 
 This new version was developed by Alexandre Mutel and is using the same concept as Babelmark 2, by acting as a proxy to other markdown convert servers. The differences are:
