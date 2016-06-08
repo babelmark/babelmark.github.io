@@ -8,13 +8,12 @@ FAQ
 
 [← Back to Babelmark](/)
 
-
-What is Babelmark 3?
+Why Babelmark 3?
 ---------------------------------------------
 
 This new version is developed by Alexandre Mutel and is using the same concept as [Babelmark 2](http://johnmacfarlane.net/babelmark2). The main differences are:
 
-- the project [babelmark](https://github.com/babelmark) is now hosted on github, accepting PR
+- the project [babelmark3](https://github.com/babelmark) is now hosted on github, accepting PR
 - the front-end (this site) is hosted on github-pages, the repository is [babelmark.github.io](https://github.com/babelmark/babelmark.github.io) using a plain jekyll website.
   - Modern look&feel  
   - Add languages and link to original projects
@@ -24,6 +23,8 @@ This new version is developed by Alexandre Mutel and is using the same concept a
   - Improved performances, multithread queries to markdown convert servers
   - Perform normalization on the server with [NUglify](https://github.com/xoofx/NUglify)
 - the [babelmark registry](https://github.com/babelmark/babelmark-registry) contains the list of markdown convert servers. This is where you can PR to add a new markdown implementation to the list. See 
+
+___
 
 The original text of this [FAQ from babelmark2](http://johnmacfarlane.net/babelmark2/faq.html) is copyrighted by John Mac Farlane
 
