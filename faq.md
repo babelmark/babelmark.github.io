@@ -8,26 +8,38 @@ FAQ
 
 [← Back to Babelmark](/)
 
+
+What is Babelmark 3?
+---------------------------------------------
+
+This new version is developed by Alexandre Mutel and is using the same concept as [Babelmark 2](http://johnmacfarlane.net/babelmark2). The main differences are:
+
+- the project [babelmark](https://github.com/babelmark) is now hosted on github, accepting PR
+- the front-end (this site) is hosted on github-pages, the repository is [babelmark.github.io](https://github.com/babelmark/babelmark.github.io) using a plain jekyll website.
+  - Modern look&feel  
+  - Add languages and link to original projects
+  - Support for `ctrl-enter`
+  - Usage of async ajax queries instead of post form
+- the back-end [babelmark-proxy](https://github.com/babelmark/babelmark-proxy) is hosted on Azure and is a .NET application.
+  - Improved performances, multithread queries to markdown convert servers
+  - Perform normalization on the server with [NUglify](https://github.com/xoofx/NUglify)
+- the [babelmark registry](https://github.com/babelmark/babelmark-registry) contains the list of markdown convert servers. This is where you can PR to add a new markdown implementation to the list. See 
+
 The original text of this [FAQ from babelmark2](http://johnmacfarlane.net/babelmark2/faq.html) is copyrighted by John Mac Farlane
 
 
 -   [What is this for?](#what-is-this-for)
--   [What are some examples of interesting divergences between
-    implementations?](#what-are-some-examples-of-interesting-divergences-between-implementations)
+-   [What are some examples of interesting divergences between implementations?](#what-are-some-examples-of-interesting-divergences-between-implementations)
     -   [Lists](#lists)
     -   [Links](#links)
     -   [Inline markup](#inline-markup)
     -   [Raw HTML](#raw-html)
     -   [Other](#other)
--   [Why does it matter whether implementations
-    agree?](#why-does-it-matter-whether-implementations-agree)
--   [What are some big questions that the markdown spec does not
-    answer?](#what-are-some-big-questions-that-the-markdown-spec-does-not-answer)
+-   [Why does it matter whether implementations agree?](#why-does-it-matter-whether-implementations-agree)
+-   [What are some big questions that the markdown spec does not answer?](#what-are-some-big-questions-that-the-markdown-spec-does-not-answer)
 -   [What was the previous Babelmark 1?](#what-was-the-previous-babelmark)
 -   [What was Babelmark 2?](#what-was-babelmark-2)
--   [What is Babelmark 3?](#what-is-babelmark-3)
--   [How can I add my markdown implementation to Babelmark
-    2?](#how-can-i-add-my-markdown-implementation-to-babelmark-2)
+-   [How can I add my markdown implementation to Babelmark 3?](#how-can-i-add-my-markdown-implementation-to-babelmark-3)
 -   [Why is there a 1000 character limit on
     input?](#why-is-there-a-1000-character-limit-on-input)
 -   [What determines the order in which the implementations are
@@ -251,22 +263,7 @@ John Mac Farlane introduced a new version called [babelmark2](http://johnmacfarl
 
 Instead of asking the Babelmark maintainer to install all the converters on his server, and keep them up to date, we use a decentralized model. Each implementer provides a small “dingus server” that accepts textual input and returns HTML. Babelmark 2 queries these dingus servers asynchronously and combines their outputs into a page of results. This system puts the burden on implementers to keep their servers up to date.
 
-
-What is Babelmark 3?
----------------------------------------------
-
-This new version was developed by Alexandre Mutel and is using the same concept as Babelmark 2, by acting as a proxy to other markdown convert servers. The differences are:
-
-- the project [babelmark](https://github.com/babelmark) is now hosted on github, accepting PR
-- the front-end (this site) is hosted on github-pages, the repository is [babelmark.github.io](https://github.com/babelmark/babelmark.github.io) using a plain jekyll website.
-  - Relooking  
-  - Use of ajax query instead of post form
-- the back-end [babelmark-proxy](https://github.com/babelmark/babelmark-proxy) is hosted on Azure and is a .NET application.
-  - Multithreads queries to markdown convert servers
-  - Perform normalization on the server
-- the [babelmark registry](https://github.com/babelmark/babelmark-registry) contains the list of markdown convert servers
-
-How can I add my markdown implementation to Babelmark 2?
+How can I add my markdown implementation to Babelmark 3?
 --------------------------------------------------------
 
 Write a server app or CGI script that accepts accepts GET queries, takes the text out of the `text` parameter, and returns a javascript object with the following fields: `name` (the name of the markdown processor), `version` (the version being run), and `html` (the result of converting
@@ -279,7 +276,7 @@ Example:
 
 The script can, if desired, return an error if the input text exceeds 1000 characters.
 
-The fork the repository [babelmark registry](https://github.com/babelmark/babelmark-registry) and add your server to the file `registry.json`
+You can then fork the repository [babelmark registry](https://github.com/babelmark/babelmark-registry), add your server to the file `registry.json` and make a pull-request!
 
 Why is there a 1000 character limit on input?
 ---------------------------------------------
