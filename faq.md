@@ -1,6 +1,7 @@
 ---
 layout: default
 permalink: /faq/
+title: faq
 ---
 FAQ
 ===
