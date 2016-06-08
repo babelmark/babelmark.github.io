@@ -6,6 +6,12 @@
   <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@xoofx" />
+  <meta name="twitter:title" content="Compare Markdown Implementations with babelmark" />
+  <meta name="twitter:description" content="{{ site.description }}" />
+  <meta name="twitter:image" content="http://babelmark.github.io/images/babelmark.png" />  
+  
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">  

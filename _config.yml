@@ -8,7 +8,7 @@
 # Site settings
 title: babelmark
 description: > # this means to ignore newlines until "baseurl:"
-  babelmark compares markdown to html implementations
+  babelmark allows to compare various implementations of Markdown
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://babelmark.github.io" # the base hostname & protocol for your site
 
