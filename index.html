@@ -121,7 +121,7 @@ function displayResults() {
 	// output names
     for (var j = 0; j < group.elements.length; j++) {
       var json = group.elements[j];
-      groupNames.append($("<p><a href='" + json.repo + "' target='_blank'>" + escapeHtml(json.name) + "</a> " + escapeHtml(json.version) + "<code class='result-lang'>" + json.lang + "</code>" + (json.cmark?" <span class='cmark'></span>" : "") + "</p>"));
+      groupNames.append($("<p><a href='" + json.repo + "' target='_blank'>" + escapeHtml(json.name) + "</a> " + escapeHtml(json.version) + "<code class='result-lang'>" + json.lang + "</code>" + (json.cmark?" <span class='cmark' title='CommonMark Compliant'></span>" : "") + "</p>"));
     }
 	groupContentBodyHtml.append(groupNames);
 	
