@@ -112,7 +112,7 @@ function displayResults() {
     groupHtml.append(groupContentBodyHtml);
     $('#results').append(groupHtml);
 
-    var groupNames = $("<div>", {class: "three columns result-names"});
+    var groupNames = $("<div>", {class: "four columns result-names"});
 	
     group.elements.sort(function(a, b) {
       return (a.name + a.version).localeCompare(b.name + b.version);
@@ -126,7 +126,7 @@ function displayResults() {
 	groupContentBodyHtml.append(groupNames);
 	
 	// output results
-    var groupResult = $('<div class="nine columns"></div>');
+    var groupResult = $('<div class="eight columns"></div>');
     groupContentBodyHtml.append(groupResult);
 	if (group.text === '')
 	{
