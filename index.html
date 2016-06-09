@@ -46,7 +46,7 @@ function escapeHtml(s)
 	return s ? s.replace(/&/g, '&amp;').replace(/</g, '&lt;') : "";
 }
 
-const jsonResults = [];
+globalResults = [];
 
 function displayResults() {
   var mapResults = {};
@@ -54,8 +54,10 @@ function displayResults() {
   
   var normalized = $('#normalize').is(':checked');
 
-  for (var i = 0; i < jsonResults.length; i++) {
-    var json = jsonResults[i];
+  // We keep globalResults as a local var as globalResults may change during a display
+  var localResults = globalResults;
+  for (var i = 0; i < localResults.length; i++) {
+    var json = localResults[i];
 	
 	// Get the text (normalized or not, error or not)
 	var text = json.html;
@@ -159,7 +161,7 @@ xhrid = 0;
 function clearResults()
 {
 	// Clears the actual results
-	jsonResults.length = 0;
+	globalResults = [];
 	$('#results').html("");
 }
 
@@ -197,7 +199,6 @@ function sendRequest(markdownText, shouldPushHistory)
 	$('#query-spin').show();
 	xhr.timeout = 30000; 
 	xhr.open("GET", "http://babelmark.azurewebsites.net/api/get?text=" + encodeURIComponent(markdownText), true)
-	var nextLine = 0;
 	xhrid++;
 	var xhrid_copy = xhrid;
 
@@ -216,21 +217,29 @@ function sendRequest(markdownText, shouldPushHistory)
 	  {
 	    return;
 	  }
+
+	  // Because I haven't been able to find a correct way to seek into the correct
+	  // chunk position (unreliable), we reparse all results from the beginning
+	  // This is not a big issue, as we have to re-display all of them anyway
 	  
-	  var slice = xhr.responseText.slice(nextLine);
+      // Accumulate results locally	  
+	  var localResults = [];
+	  var slice = xhr.responseText;
 	  var textResults = slice.split("\n\n");
 	  for(var i = 0; i < textResults.length; i++)
 	  {
-		if (textResults[i] === "")
+	    var jsonText = textResults[i].trim();
+		if (jsonText === "")
 		{
 			continue;
 		}
-	    var jsonText = textResults[i].trim();
 		var json = JSON.parse(jsonText);
-		jsonResults.push(json);
+		localResults.push(json);
 	  }
+	  
+	  // Once we are done, replace globalResults once
+	  globalResults = localResults;
 	  displayResults();
-	  nextLine = xhr.responseText.length;
 	};
 	
 	xhr.onerror = function()
