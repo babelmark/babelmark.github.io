@@ -51,10 +51,13 @@ body {
   }
 }
 
-.button-primary code
+kbd
 {
-  color: #222;
   background-color: #c0efff;
+  color: #888;
+  border-radius: 4px;
+  padding: 3px;
+  font-size: 0.8rem;
 }
 
 .result-names p {
