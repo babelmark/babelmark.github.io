@@ -7,15 +7,13 @@ layout: default
 	</div>
 </div>
 <div class="row">
-	<div class="three columns">
+	<div class="twelve columns">
 		<button class="button-primary" onclick="sendRequestFromInput()">Convert <code>(ctrl+enter)</code></button>
+		<label style="display: inline-block;">
+		   <input id="normalize" type="checkbox" checked onchange="displayResults()">
+		   <span class="label-body">Normalize</span>
+		</label>
 		<span id="query-spin" class="spin" style="display: none">{% include spin.svg %}</span>
-	</div>
-	<div class="nine columns">
-		  <label>
-			<input id="normalize" type="checkbox" checked onchange="displayResults()">
-			<span class="label-body">Normalize</span>
-		  </label>
 	</div>
 </div>
 <div class="row">
