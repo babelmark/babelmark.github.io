@@ -15,4 +15,4 @@ url: "http://babelmark.github.io" # the base hostname & protocol for your site
 sass:
   style: compressed
 
-exclude: ['readme.md']
+exclude: ['readme.md', 'ISSUE_TEMPLATE']
