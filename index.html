@@ -62,20 +62,23 @@ function displayResults() {
 	
 	// Get the text (normalized or not, error or not)
 	var text = json.html;
+	var text_safe = json.html_safe;
 	if (json.error)
     {
 	  text = json.error;
+	  text_safe = json.error;
     }
 	else if (normalized)
 	{
 	  text = json.html_clean;
 	}
 	text = (text ? text : "").trim();
+	text_safe = (text_safe ? text_safe : "").trim();
     
     var resultsPerGroup = mapResults[text]
     if (!resultsPerGroup)
     {
-    	resultsPerGroup = { id: groupResults.length, text: text, error: json.error,  elements:[]};
+    	resultsPerGroup = { id: groupResults.length, text: text, text_safe: text_safe, error: json.error,  elements:[]};
     	mapResults[text] = resultsPerGroup;
     	groupResults.push(resultsPerGroup)
     }
@@ -145,7 +148,7 @@ function displayResults() {
       var codeElement = $('<code class="language-html line-numbers">' + escapeHtml(group.text) + "</code><");
       preElement.append(codeElement);
       groupResult.append(preElement);
-	  groupResult.append($('<div class="preview markdown-body">' + group.text + '</div>'))
+	  groupResult.append($('<div class="preview markdown-body">' + group.text_safe + '</div>'))
       Prism.highlightElement(codeElement[0]);
 	}
   }
