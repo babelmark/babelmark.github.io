@@ -1,6 +1,6 @@
 # babelmark.github.io
 
-This is the front-end website powering [babelmark3](http://babelmark.github.io)
+This is the front-end website powering [babelmark3](https://babelmark.github.io)
 
 - If you are looking for the backend server: [babelmark-proxy](https://github.com/babelmark/babelmark-proxy)
 - If you are looking for the registry: [babelmark-registry](https://github.com/babelmark/babelmark-registry)
