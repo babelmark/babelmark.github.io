@@ -202,7 +202,7 @@ function sendRequest(markdownText, shouldPushHistory)
 	var xhr = new XMLHttpRequest()
 	$('#query-spin').show();
 	xhr.timeout = 30000; 
-	xhr.open("GET", "http://babelmark.azurewebsites.net/api/get?text=" + encodeURIComponent(markdownText), true)
+	xhr.open("GET", "https://babelmark.azurewebsites.net/api/get?text=" + encodeURIComponent(markdownText), true)
 	xhrid++;
 	var xhrid_copy = xhrid;
 
