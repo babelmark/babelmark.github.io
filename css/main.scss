@@ -69,6 +69,11 @@ kbd
   height: 150px;
   font-family: monospace;
   font-size: 16px;
+
+  tab-size: 4;
+  -o-tab-size : 4; 
+  -moz-tab-size: 4;
+  -webkit-tab-size: 4;
 }
 
 .cmark
