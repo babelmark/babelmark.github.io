@@ -151,22 +151,3 @@ code .result-lang
   .title { font-size: 7.0rem; } 
   .logo { width: 64px; }
 }
-
-/* show source and rendition side-by-side */
-@media (min-width: 1000px) {
-  pre.language-html.line-numbers,
-  div.preview.markdown-body {
-    margin: 0.5em 4% 1em 0; /* 4% like .columns */
-    width: 48%; /* like .six.columns */
-    float: left; /* like .columns */    box-sizing: border-box; /* like .columns */
-  }
-  pre.language-html.line-numbers {
-    max-width: 80ch; /* improve legibility */
-  }
-  div.preview.markdown-body {
-    margin-left: 0; /* like .colums:first-child */
-  }
-  .markdown-body::before, .markdown-body::after {
-    display: none;
-  }
-}
