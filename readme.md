@@ -22,8 +22,8 @@ The babelmark3 website is relying on the following services/libraries:
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">babelmark3 website</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://xoofx.com" property="cc:attributionName" rel="cc:attributionURL">Alexandre Mutel</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">babelmark3 website</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://xoofx.github.io" property="cc:attributionName" rel="cc:attributionURL">Alexandre Mutel</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
 ## Author
 
-Alexandre Mutel aka [xoofx](http://xoofx.com)
+Alexandre Mutel aka [xoofx](https://xoofx.github.io)
